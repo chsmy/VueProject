@@ -21,28 +21,50 @@
 				</div>
 			</div>
 			
-			<div v-if="seller.supports" class="support-count">
+			<div v-if="seller.supports" class="support-count" @click="showDetail">
 					<span class="count">{{seller.supports.length}}个</span>
 					<span class="text"></span>
 				</div>
 		</div>
 
-		<div class="bottom-wrapper">
+		<div class="bottom-wrapper" v-on:click="showDetail">
 			<span class="bottom-title"></span><span class="bottom-text">{{seller.bulletin}}</span>
 			<span class="bottom-arrow"></span>
 		</div>
 		<div class="top-background">
 			<img :src="seller.avatar" width="100%" height="100%"/>
 		</div>
+		
+		<div class="detail" v-show="detailShow">
+			<div class="detail-wrapper clearfix">
+				<div class="detail-content">
+					<h1 class="name">{{seller.name}}</h1>
+					<div class="star-wrapper">
+						<star :size="48" :score="seller.score"></star>
+					</div>
+				</div>
+			</div>
+			<div class="detail-close">
+				<img src="guarantee_2@2x.png"/>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
-	import axios from 'axios'
+	import axios from 'axios';
+	import star from '@/components/star/star';
+	
 	export default {
 		data() {
 			return {
 				seller: {},
+				detailShow:false
+			}
+		},
+		methods:{
+			showDetail(){
+				this.detailShow = true;
 			}
 		},
 		created() {
@@ -57,11 +79,25 @@
 					console.log(error);
 				});
 		},
+		components:{
+			star
+		},
 	}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+	.clearfix{
+		display: inline-block;
+	}
+	.clearfix:after{
+		clear: both;
+		content: ".";
+		display: block;
+		width: 0;
+		height: 0;
+		visibility: hidden;
+	}
 	.avatar_ {
 		width: 6.4rem;
 		height: 6.4rem;
@@ -72,6 +108,7 @@
 		color: white;
 		position: relative;
 		background: rgba(7,17,27,0.5);
+		overflow: hidden;
 		/*background-color: #2C3E50;*/
 	}
 	
@@ -109,8 +146,9 @@
 	.name {
 		font-size: 1.6rem;
 		margin-left: 0.6rem;
-		font-weight: bold;
+		font-weight: 700;
 		line-height: 1.8rem;
+		text-align: center;
 	}
 	
 	.descirption {
@@ -187,5 +225,36 @@
 		height: 100%;
 		z-index: -1;
 		filter: blur(1rem);
+	}
+	.detail{
+		position: fixed;
+		z-index: 100;
+		width: 100%;
+		height: 100%;
+		overflow: auto;
+		background: rgba(7,17,27,0.8);
+		top: 0;
+		left: 0;
+	}
+	.detail-wrapper{
+		min-height: 100%;
+		width: 100%;
+	}
+	.detail-content{
+		margin-top: 6.4rem;
+		padding-bottom: 6.4rem;
+	}
+	.detail-close{
+		position: relative;
+		margin: -6.4rem auto 0 auto;
+		width: 3.2rem;
+		height: 3.2rem;
+		clear: both;
+		font-size: 3.2rem;
+	}
+	.star-wrapper{
+		margin-top: 1.8rem;
+		padding: .2rem 0;
+		text-align: center;
 	}
 </style>
