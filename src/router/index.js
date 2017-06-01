@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import axios from 'axios'
 import Top from '@/components/top/Top'
-import Goods from '@/components/Goods'
+import Goods from '@/components/goods/Goods'
 import Ratings from '@/components/Ratings'
 import Seller from '@/components/Seller'
 
