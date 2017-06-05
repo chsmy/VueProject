@@ -1,6 +1,6 @@
 <template>
 	<div id="app">
-		<router-view class="view one"></router-view>
+		<router-view class="view one" :seller="seller"></router-view>
 		<div class="tab">
 			<div class="tab_item">
 				<router-link to="/goods" class="tab_click">商品</router-link>
@@ -12,7 +12,7 @@
 				<router-link to="/seller" class="tab_click">商家</router-link>
 			</div>
 		</div>
-		<router-view class="view two" name="content"></router-view>
+		<router-view class="view two" name="content" :seller="seller"></router-view>
 	</div>
 </template>
 
@@ -22,21 +22,22 @@
 		name: 'app',
 		data() {
 			return {
-
+              seller: {},
 			}
 		},
-		//created () {
-		//  axios.get('/api/seller', {
-		//  params: {
-		//  }
-		//})
-		//.then(function (response) {
-		//  console.log(response);
-		//})
-		//.catch(function (error) {
-		//  console.log(error);
-		//});
-		//},
+		created () {
+		  let _this = this;
+		  axios.get('/api/seller', {
+		  params: {
+		  }
+		})
+		.then(function (response) {
+		  _this.seller = response.data.data;
+		})
+		.catch(function (error) {
+		  console.log(error);
+		});
+		},
 	}
 </script>
 

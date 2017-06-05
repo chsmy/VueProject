@@ -35,7 +35,7 @@
 				</li>
 			</ul>
 		</div>
-	  <shopcart></shopcart>
+	  <shopcart :deliveryPrice = "seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 	</div>
 </template>
 
@@ -45,6 +45,9 @@
 	import shopcart from '@/components/shopcart/ShopCart';
 
 	export default {
+		props:{
+			seller: {}
+		},
 		data() {
 			return {
 				goods: [],
@@ -90,6 +93,7 @@
 			}
 		},
 		methods: {
+			//初始化滑动组件
 			_initScroll() {
 				this.meunScroll = new BScroll(this.$refs.menuWrapper, {
 					click:true
@@ -101,6 +105,7 @@
 					this.scrollY = Math.abs(Math.round(pos.y));
 				});
 			},
+			//计算每个商品list的高度
 			_calculateHeight() {
 				let foodList = this.$refs.foodsWrapper.getElementsByClassName('food-list-hook');
 				let height = 0;
@@ -111,6 +116,7 @@
 					this.foodsListHeight.push(height);
 				}
 			},
+			//menu的点击事件
 			selectMenu(index,event){
 				if(!event._constructed){
 					return;

@@ -79,9 +79,11 @@
 	import star from '@/components/star/star';
 
 	export default {
+		props:{
+			seller: {}
+		},
 		data() {
 			return {
-				seller: {},
 				detailShow: false
 			}
 		},
@@ -95,16 +97,16 @@
 		},
 		created() {
 			this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-			let _this = this;
-			axios.get('/api/seller', {
-					params: {}
-				})
-				.then(function(response) {
-					_this.seller = response.data.data;
-				})
-				.catch(function(error) {
-					console.log(error);
-				});
+//			let _this = this;
+//			axios.get('/api/seller', {
+//					params: {}
+//				})
+//				.then(function(response) {
+//					_this.seller = response.data.data;
+//				})
+//				.catch(function(error) {
+//					console.log(error);
+//				});
 		},
 		components: {
 			star
