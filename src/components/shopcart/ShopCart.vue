@@ -9,7 +9,7 @@
 					</div>
 					<div class="num" v-show="totalCount>0">{{totalCount}}</div>
 				</div>
-				<div class="price" :class="{'price-highlight':totalCount>0}">{{totalPrice}}元</div>
+				<div class="price" :class="{'price-highlight':totalCount>0}">￥{{totalPrice}}元</div>
 				<div class="desc">另需配送费￥{{deliveryPrice}}元</div>
 			</div>
 			<div class="content-right">
@@ -27,10 +27,7 @@
 			selectFoods: {
 				type: Array,
 				default() {
-					return [{
-						price: 10,
-						count: 1
-					}];
+					return [];
 				}
 			},
 			deliveryPrice: {
@@ -121,8 +118,8 @@
 	}
 	
 	.content-right {
-		flex: 0 0 10.5rem;
-		width: 10.5rem;
+		flex: 0 0 9rem;
+		width: 9rem;
 	}
 	
 	.pay {
@@ -180,7 +177,7 @@
 		vertical-align: top;
 		line-height: 2.4rem;
 		margin-top: 1.2rem;
-		padding-right: 1.2rem;
+		padding-right: 0.8rem;
 		box-sizing: border-box;
 		border-right: .1rem solid rgba(255, 255, 255, 0.1);
 		font-size: 1.6rem;
@@ -193,10 +190,10 @@
 	
 	.desc {
 		display: inline-block;
-		vertical-align: top;
-		margin: 1.2rem 0 0 1.2rem;
-		line-height: 2.4rem;
+		line-height: 4.8rem;
 		font-size: 1rem;
+		text-align: center;
+		margin-left: 1rem;
 	}
 	
 	.num {

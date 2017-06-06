@@ -29,13 +29,16 @@
 									<span class="now-price">¥{{food.price}}</span>
 									<span v-show="food.oldPrice" class="old-price">¥{{food.oldPrice}}</span>
 								</div>
+								<div class="cartcontrol-wrapper">
+									<cartcontrol :food="food"></cartcontrol>
+								</div>
 							</div>
 						</li>
 					</ul>
 				</li>
 			</ul>
 		</div>
-	  <shopcart :deliveryPrice = "seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+	  <shopcart :selectFoods ="selectFoods" :deliveryPrice = "seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 	</div>
 </template>
 
@@ -43,6 +46,7 @@
 	import axios from 'axios';
 	import BScroll from 'better-scroll';
 	import shopcart from '@/components/shopcart/ShopCart';
+	import cartcontrol from '@/components/cartcontrol/cartcontrol';
 
 	export default {
 		props:{
@@ -56,7 +60,7 @@
 			}
 		},
 		components:{
-			shopcart
+			shopcart,cartcontrol
 		},
 		created() {
 			this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
@@ -90,6 +94,17 @@
 					}
 				}
 				return 0;
+			},
+			selectFoods(){
+				let foods = [];
+				this.goods.forEach((good)=>{
+					good.foods.forEach((food)=>{
+						if(food.count){
+							foods.push(food)
+						}
+					})
+				});
+				return foods;
 			}
 		},
 		methods: {
@@ -99,6 +114,7 @@
 					click:true
 				});
 				this.foodsScroll = new BScroll(this.$refs.foodsWrapper, {
+					click:true,
 					probeType: 3
 				});
 				this.foodsScroll.on('scroll', (pos) => {
@@ -220,8 +236,9 @@
 		margin-right: 1rem;
 	}
 	
-	.food-item .content {
+    .content {
 		flex: 1;
+		position: relative;
 	}
 	
 	.name {
@@ -278,4 +295,9 @@
 	.current .text {
 		border-bottom: none;
 	}
+    .cartcontrol-wrapper{
+    	position: absolute;
+    	right: 0;
+    	bottom: 0;
+    }
 </style>
