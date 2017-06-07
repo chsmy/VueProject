@@ -35,6 +35,7 @@
 				}else{
 					this.food.count++
 				}
+				this.$emit('add', event.target);
 			},
 			reduceCart(event){
 				if(!event._constructed){
@@ -113,15 +114,15 @@
 	}
 	.move-transition{
 		opacity: 1;
-		transform: transition3D(0,0,0);
+		transform: transition3d(0,0,0);
 	}
 	.move-enter{
 		opacity: 0;
-		transform: transition3D(2.4rem,0,0);
+		transform: transition3d(2.4rem,0,0);
 	}
 	.move-leave{
 		opacity: 0;
-		transform: transition3D(2.4rem,0,0);
+		transform: transition3d(2.4rem,0,0);
 	}
 	.move-transition .inner{
 		transform: rotate(0);
