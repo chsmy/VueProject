@@ -23,13 +23,13 @@
 
 			<div v-if="seller.supports" class="support-count" @click="showDetail">
 				<span class="count">{{seller.supports.length}}个</span>
-				<span class="text"></span>
+				<span class="icon-keyboard_arrow_right"></span>
 			</div>
 		</div>
 
 		<div class="bottom-wrapper" v-on:click="showDetail">
 			<span class="bottom-title"></span><span class="bottom-text">{{seller.bulletin}}</span>
-			<span class="bottom-arrow"></span>
+			<span class="icon-keyboard_arrow_right"></span>
 		</div>
 		<div class="top-background">
 			<img :src="seller.avatar" width="100%" height="100%" />
@@ -67,7 +67,7 @@
 					</div>
 				</div>
 				<div class="detail-close" @click="hiddeDetail">
-					<img src="../star/star24_on@2x.png" />
+					<i class="icon-close"></i>
 				</div>
 			</div>
 		</transition>
@@ -116,6 +116,33 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+	
+	@font-face {
+		font-family: 'sell-icon';
+		src: url('../../common/fonts/sell-icon.eot?k5xf13');
+		src: url('../../common/fonts/sell-icon.eot?k5xf13#iefix') format('embedded-opentype'), url('../../common/fonts/sell-icon.ttf?k5xf13') format('truetype'), url('../../common/fonts/sell-icon.woff?k5xf13') format('woff'), url('../../common/fonts/sell-icon.svg?k5xf13#sell-icon') format('svg');
+		font-weight: normal;
+		font-style: normal;
+	}
+	
+	[class^="icon-"],
+	[class*=" icon-"] {
+		/* use !important to prevent issues with browser extensions that change fonts */
+		font-family: 'sell-icon' !important;
+		speak: none;
+		font-style: normal;
+		font-weight: normal;
+		font-variant: normal;
+		text-transform: none;
+		line-height: 1;
+		/* Better Font Rendering =========== */
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	
+	.icon-close:before{
+		content: "\e906";
+	}
 	.clearfix {
 		display: inline-block;
 	}
@@ -235,7 +262,13 @@
 		line-height: 2.4rem;
 		font-size: 1rem;
 	}
-	
+	.support-count .icon-keyboard_arrow_right{
+		  margin-left: 0.2rem;
+          line-height: 2.4rem;
+          font-size: 1rem;
+          top: 0;
+          right: 0.5rem;
+	}
 	.bottom-wrapper {
 		background: rgba(7, 17, 27, 0.2);
 		position: relative;
@@ -263,15 +296,14 @@
 		font-size: 1rem;
 		margin: 0 0.4rem;
 	}
-	
-	.bottom-arrow {
+	.icon-keyboard_arrow_right:before{
+		content: "\e909";
+	}
+	.icon-keyboard_arrow_right {
 		position: absolute;
 		font-size: 1rem;
-		right: 1rem;
+		right: 0.8rem;
 		top: 0.8rem;
-		background: rgba(0, 0, 0, 0.2);
-		width: 1rem;
-		height: 1rem;
 	}
 	
 	.top-background {

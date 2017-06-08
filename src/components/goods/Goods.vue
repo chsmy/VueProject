@@ -1,5 +1,6 @@
 <!--商品-->
 <template>
+	<div>
 	<div class="goods">
 		<div class="menu-wrapper" ref="menuWrapper">
 			<ul>
@@ -15,7 +16,7 @@
 				<li v-for="item in goods" class="food-list food-list-hook">
 					<h1 class="title">{{item.name}}</h1>
 					<ul>
-						<li v-for="food in item.foods" class="food-item">
+						<li v-for="food in item.foods" class="food-item" @click="selectFood(food,$event)">
 							<div class="icon">
 								<img :src="food.icon" width="57px" height="57px" />
 							</div>
@@ -40,6 +41,8 @@
 		</div>
 	  <shopcart ref="shopcart" :selectFoods ="selectFoods" :deliveryPrice = "seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 	</div>
+	    <Food :food="selectedFood" ref="food" @add="addFood"></Food>
+	</div>
 </template>
 
 <script>
@@ -47,6 +50,7 @@
 	import BScroll from 'better-scroll';
 	import shopcart from '@/components/shopcart/ShopCart';
 	import cartcontrol from '@/components/cartcontrol/cartcontrol';
+	import Food from '@/components/food/Food';
 
 	export default {
 		props:{
@@ -56,11 +60,12 @@
 			return {
 				goods: [],
 				foodsListHeight: [],
-				scrollY: 0
+				scrollY: 0,
+				selectedFood:{}
 			}
 		},
 		components:{
-			shopcart,cartcontrol
+			shopcart,cartcontrol,Food
 		},
 		created() {
 			this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
@@ -148,6 +153,14 @@
 				this.$nextTick(()=>{
 					this.$refs.shopcart.drop(target);
 				});
+			},
+			//点击每个商品 
+			selectFood(food,event){
+				if(!event._constructed){
+					return;
+				}
+				this.selectedFood = food;
+				this.$refs.food.show();
 			}
 		},
 	}
