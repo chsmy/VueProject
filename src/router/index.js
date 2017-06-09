@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import axios from 'axios'
 import Top from '@/components/top/Top'
 import Goods from '@/components/goods/Goods'
-import Ratings from '@/components/Ratings'
+import Ratings from '@/components/ratings/Ratings'
 import Seller from '@/components/Seller'
 
 Vue.use(Router);

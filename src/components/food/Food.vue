@@ -36,7 +36,22 @@
 				<split></split>
 				<div class="rating">
 					<h1>商品评价</h1>
-					<ratingselect :selectType="selectType" :desc="desc" :onlyContent="onlyContent" :ratings="food.ratings"></ratingselect>
+					<ratingselect @toogle="toggleContent" @select="selectRating" :selectType="selectType" :desc="desc" :onlyContent="onlyContent" :ratings="food.ratings"></ratingselect>
+					<div class="rating-wrapper">
+						<ul v-show="food.ratings&&food.ratings.length">
+							<li v-show="needshow(rating.rateType,rating.text)" v-for="rating in food.ratings" class="rating-item">
+								<div class="user">
+									<span class="name">{{rating.username}}</span>
+									<img class="avatar" :src="rating.avatar" />
+								</div>
+								<div class="time">{{rating.rateTime | formatDate}}</div>
+								<p class="text">
+									<span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>{{rating.text}}
+								</p>
+							</li>
+						</ul>
+						<div class="no-rating" v-show="!food.ratings||!food.ratings.length">暂无评价！</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -48,10 +63,9 @@
 	import cartcontrol from '@/components/cartcontrol/cartcontrol';
 	import split from '@/components/split/split';
 	import ratingselect from '@/components/ratingselect/RatingSelect';
+	import { formatDate } from '@/common/js/date';
 	import Vue from 'vue'
-	const POSITIVE = 1;
-	const NATIVE = 2;
-	const ALL = 3;
+	const LEFT = 2;
 	export default {
 		props: {
 			food: {},
@@ -59,13 +73,19 @@
 		data() {
 			return {
 				showFlag: false,
-				selectType:ALL,
-				onlyContent:true,
-				desc:{
-					all:'全部',
-  				positive:'推荐',
-  				nagative:'吐槽'
+				selectType: LEFT,
+				onlyContent: true,
+				desc: {
+					all: '全部',
+					positive: '推荐',
+					nagative: '吐槽'
 				}
+			}
+		},
+		filters: {
+			formatDate(time) {
+				let date = new Date(time);
+				return formatDate(date, 'yyyy-MM-dd hh:mm');
 			}
 		},
 		components: {
@@ -76,17 +96,17 @@
 		methods: {
 			show() {
 				this.showFlag = true;
-				this.selectType = ALL;
+				this.selectType = LEFT;
 				this.onlyContent = true;
 				this.$nextTick(() => {
-          if (!this.scroll) {
-            this.scroll = new BScroll(this.$refs.food, {
-              click: true
-            });
-          } else {
-            this.scroll.refresh();
-          }
-        });
+					if(!this.scroll) {
+						this.scroll = new BScroll(this.$refs.food, {
+							click: true
+						});
+					} else {
+						this.scroll.refresh();
+					}
+				});
 			},
 			leave() {
 				this.showFlag = false;
@@ -101,7 +121,29 @@
 			addFood(target) {
 				this.$emit('add', target);
 			},
-		}
+			needshow(type, ratingtext) {
+				if(this.onlyContent && !ratingtext) {
+					return false;
+				}
+				if(this.selectType === LEFT) {
+					return true;
+				} else {
+					return type === this.selectType;
+				}
+			},
+			selectRating(type) {
+				this.selectType = type;
+				this.$nextTick(() => {
+					this.scroll.refresh();
+				});
+			},
+			toggleContent() {
+				this.onlyContent = !this.onlyContent;
+				this.$nextTick(() => {
+					this.scroll.refresh();
+				});
+			}
+		},
 	}
 </script>
 
@@ -205,7 +247,6 @@
 	}
 	
 	.rating {
-		margin-left: 1.2rem;
 	}
 	
 	.price {
@@ -253,30 +294,100 @@
 	.fade-leave-active {
 		opacity: 0;
 	}
-
-  .food-info{
-  	padding: 1.8rem;
-  }
-  .info-title{
-  	font-size: 1.4rem;
-  	margin-bottom: 0.6rem;
-  	color: rgb(7,17,27);
-  	font-weight: 700;
-  	line-height: 1.4rem;
-  }
-  .info{
-  	font-size: 1.2rem;
-  	line-height: 2.4rem;
-  	padding: 0 0.8rem;
-  	color: rgb(77,89,93);
-  }
-  .rating{
-  	padding-top: 1.8rem;
-  }
-  .rating h1{
-  	font-size: 1.4rem;
-  	color: rgb(7,17,27);
-  	font-weight: 700;
-  	line-height: 1.4rem;
-  }
+	
+	.food-info {
+		padding: 1.8rem;
+	}
+	
+	.info-title {
+		font-size: 1.4rem;
+		margin-bottom: 0.6rem;
+		color: rgb(7, 17, 27);
+		font-weight: 700;
+		line-height: 1.4rem;
+	}
+	
+	.info {
+		font-size: 1.2rem;
+		line-height: 2.4rem;
+		padding: 0 0.8rem;
+		color: rgb(77, 89, 93);
+	}
+	
+	.rating {
+		padding-top: 1.8rem;
+	}
+	
+	.rating h1 {
+		font-size: 1.4rem;
+		color: rgb(7, 17, 27);
+		font-weight: 700;
+		line-height: 1.4rem;
+		margin-left: 1.8rem;
+	}
+	
+	.icon-thumb_up:before {
+		content: "\e901";
+		color: rgb(0, 160, 220);
+		margin-right: 0.4rem;
+		line-height: 1.6rem;
+		font-size: 1.2rem;
+	}
+	
+	.icon-thumb_down:before {
+		content: "\e902";
+		color: rgb(147, 153, 159);
+		margin-right: 0.4rem;
+		line-height: 1.6rem;
+		font-size: 1.2rem;
+	}
+	
+	.rating-wrapper {
+		padding: 0 18px;
+	}
+	
+	.rating-item {
+		position: relative;
+		padding: 1.6rem 0;
+		border-bottom: 0.1rem solid rgba(7, 17, 27, 0.1);
+	}
+	
+	.user {
+		position: absolute;
+		right: 0;
+		top: 1.6rem;
+	}
+	
+	.user .name {
+		margin-right: 0.6rem;
+		font-size: 1rem;
+		color: rgb(147, 153, 159);
+		line-height: 1.2rem;
+		display: inline-block;
+		vertical-align: top;
+	}
+	
+	.user .avatar {
+		width: 1.2rem;
+		height: 1.2rem;
+	}
+	
+	.time {
+		margin-bottom: 0.6rem;
+		line-height: 1.2rem;
+		font-size: 1rem;
+		color: rgb(147, 153, 159);
+	}
+	
+	.text {
+		font-size: 1.2rem;
+		line-height: 1.6rem;
+		color: rgb(7, 17, 27);
+	}
+	
+	.no-rating {
+		padding: 1.6rem 0;
+		font-size: 1.2rem;
+		color: rgb(147, 153, 159);
+	}
 </style>

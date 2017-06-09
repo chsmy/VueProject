@@ -2,24 +2,24 @@
 <template>
   <div class="ratingselect">
     <div class="rating-type">
-    	<span class="block positive">{{desc.all}}<span class="count">47</span></span>
-    	<span class="block positive">{{desc.positive}}<span class="count">37</span></span>
-    	<span class="block nagative">{{desc.nagative}}<span class="count">5</span></span>
+    	<span @click="select(2,$event)" class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span class="count">{{ratings.length}}</span></span>
+    	<span @click="select(0,$event)" class="block positive" :class="{'active':selectType===0}">{{desc.positive}}<span class="count">{{positive.length}}</span></span>
+    	<span @click="select(1,$event)" class="block nagative" :class="{'active_':selectType===1}">{{desc.nagative}}<span class="count">{{nagative.length}}</span></span>
     </div>
-    <div class="switch">
-    	<span class="icon-check_circle"></span>
+    <div class="switch" @click="toogleContent">
+    	<span class="icon-check_circle" :class="{'on':onlyContent}"></span>
     	<span class="text">只看有内容的评价</span>
     </div>
   </div>
 </template>
 
 <script>
-	const POSITIVE = 1;
-	const NATIVE = 2;
-	const ALL = 3;
+	const LEFT = 2;
+	const MIDDLE = 0;
+	const RIGHT = 1;
 export default {
   props:{
-  	rating:{
+  	ratings:{
   		type:Array,
   		default(){
   			return [];
@@ -27,11 +27,11 @@ export default {
   	},
   	selectType:{
   		type:Number,
-  		default:ALL
+  		default:LEFT,
   	},
   	onlyContent:{
   		 type:Boolean,
-  		default:false
+  		 default:false
   	},
   	desc:{
   		type:Object,
@@ -48,6 +48,32 @@ export default {
     return {
      
     }
+  },
+  computed:{
+  	positive(){
+  		return this.ratings.filter((rating)=>{
+  			return rating.rateType === MIDDLE;
+  		})
+  	},
+  	nagative(){
+  			return this.ratings.filter((rating)=>{
+  			return rating.rateType === RIGHT;
+  		})
+  	}
+  },
+  methods:{
+  	select(type,event){
+  		if(!event._constructed) {
+					return;
+				}
+  		this.$emit('select',type);
+  	},
+  	toogleContent(){
+  		if(!event._constructed) {
+					return;
+				}
+  		this.$emit('toogle',this.onlyContent);
+  	}
   }
 }
 </script>
@@ -104,5 +130,34 @@ export default {
   .count{
   	font-size: 0.8rem;
   	margin-left: 0.2rem;
+  }
+  .active{
+  	color: #fff;
+  	background: rgb(0, 160, 220);
+  }
+  .active_{
+  	color: #fff;
+  	background: rgb(77, 85, 93);
+  }
+  .switch{
+  	padding: 1.2rem 1.8rem;
+  	line-height: 2.4rem;
+  	border-bottom: 0.1rem solid rgba(7,17,27,0.1);
+  	color: rgb(147,153,159);
+  	font-size: 0;
+  }
+  .icon-check_circle{
+  	display: inline-block;
+  	vertical-align: top;
+  	font-size: 2.4rem;
+  	margin-right: 0.4rem;
+  }
+  .text{
+  	display: inline-block;
+  	vertical-align: top;
+  	font-size: 1.2rem;
+  }
+  .on{
+  	color: #00c850;
   }
 </style>
