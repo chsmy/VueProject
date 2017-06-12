@@ -4,7 +4,7 @@ import axios from 'axios'
 import Top from '@/components/top/Top'
 import Goods from '@/components/goods/Goods'
 import Ratings from '@/components/ratings/Ratings'
-import Seller from '@/components/Seller'
+import Seller from '@/components/seller/Seller'
 
 Vue.use(Router);
 

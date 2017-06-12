@@ -420,4 +420,9 @@
 		font-size: 1.2rem;
 		margin: 0 auto;
 	}
+	@media only screen and (max-width: 320px) {
+		.content-wrapper {
+		padding: 2.4rem 1.2rem 1.8rem 1.2rem;
+	}
+	}
 </style>

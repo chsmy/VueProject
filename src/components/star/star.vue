@@ -76,8 +76,13 @@ export default {
 .star-36 .start-item{
 	width: 1.5rem;
 	height: 1.5rem;
-	margin-right: 1.6rem;
+	margin-right: 0.6rem;
 	background-size: 1.5rem 1.5rem;
+}
+@media only screen and (max-width: 320px) {
+	.star-36 .start-item{
+	  margin-right: 0.3rem;
+	}
 }
 .star-36 .on{
 	background-image: url(star36_on@2x.png);
