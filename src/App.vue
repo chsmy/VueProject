@@ -12,27 +12,38 @@
 				<router-link to="/seller" class="tab_click">商家</router-link>
 			</div>
 		</div>
+		<keep-alive>
 		<router-view class="view two" name="content" :seller="seller"></router-view>
+		</keep-alive>
 	</div>
 </template>
 
 <script>
-	import axios from 'axios'
+	import {urlParse} from './common/js/util';
+	import axios from 'axios';
+	
 	export default {
-		name: 'app',
 		data() {
 			return {
-              seller: {},
+              seller: {
+              	 id: (() => {
+                    let queryParam = urlParse();
+                     return queryParam.id;
+                 })()
+              }
 			}
 		},
 		created () {
+			console.log(this.seller.id);
 		  let _this = this;
 		  axios.get('/api/seller', {
 		  params: {
+		  	id:_this.seller.id
 		  }
 		})
 		.then(function (response) {
-		  _this.seller = response.data.data;
+			_this.seller = Object.assign({}, _this.seller, response.data.data);
+			console.log(_this.seller)
 		})
 		.catch(function (error) {
 		  console.log(error);
